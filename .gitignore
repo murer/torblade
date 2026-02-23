@@ -1,0 +1,10 @@
+# Docker
+.docker/
+*.log
+
+# System
+.DS_Store
+Thumbs.db
+
+# Torblade specific
+*.tmp
