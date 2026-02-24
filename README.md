@@ -2,6 +2,8 @@
 
 **Torblade** is a minimalist, transparent Tor proxy gateway. It transforms a Linux VM into a secure bridge that forces all downstream client traffic through the Tor network, preventing leaks by design.
 
+[<img src="https://raw.githubusercontent.com/murer/torblade/refs/heads/master/docs/torblade-lt.jpeg" width="280" />](https://github.com/murer/torblade)
+
 ### Core Features
 
 * **Zero-Leak Policy:** Non-Tor packets are strictly blocked at the firewall level.
