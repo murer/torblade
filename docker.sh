@@ -53,6 +53,12 @@ function cmd_start() {
   cmd_healthcheck
 }
 
+function cmd_start_retry() {
+  while ! cmd_start; do
+    sleep 1
+  done
+}
+
 function cmd_stop() {
   docker rm -f torbladedev_server || true
 }

@@ -1,0 +1,7 @@
+DNSPort 9053
+SocksPort 0.0.0.0:9050
+TransPort 0.0.0.0:9040
+AutomapHostsOnResolve 1
+VirtualAddrNetworkIPv4 10.192.0.0/10
+#Log notice stdout
+#Log info file /var/log/tor/info.log

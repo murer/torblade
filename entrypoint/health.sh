@@ -5,7 +5,7 @@ function cmd_tor() {
 }
 
 function cmd_doh() {
-    dig @127.0.0.1 -p 5353 example.com # > /dev/null
+    dig @127.0.0.1 -p 5300 example.com # > /dev/null
 }
 
 function cmd_wait_tor() {
