@@ -22,13 +22,27 @@ function cmd_install_dhpcd() {
     cp isc-dhcp-server /etc/default/isc-dhcp-server
 }
 
+function cmd_install_ips() {
+    sudo nmcli connection modify "Wired connection 2" \
+        ipv4.addresses 192.168.60.10/24 \
+        ipv4.method manual \
+        ipv4.gateway "" \
+        ipv4.dns "" \
+        ipv6.addresses "" \
+        ipv6.dns "" \
+        ipv6.method disabled
+
+    sudo nmcli connection up "Wired connection 2"
+}
+
 function cmd_install_all() {
+    cmd_install_ips
     cmd_install_dhpcd
     cmd_install_protonvpn
 }
 
 function cmd_start_dhcpd() {
-    service isc-dhcp-server restart
+    service isc-dhcp-server start
 }
 
 function cmd_start_all() {
