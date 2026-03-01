@@ -8,11 +8,11 @@ function cmd_install_protonvpn() {
     apt -y install proton-vpn-gtk-app
 
     if [[ "x$hexblade_user" != "x" ]]; then
-        cmd_group "$hexblade_user"
+        usermod -aG netdev "$hexblade_user"
     elif [[ "x$UID" == "x0" && "x$SUDO_USER" != "x" && "x$SUDO_UID" != "x0" ]]; then
-        cmd_group "$SUDO_USER"
+        usermod -aG netdev "$SUDO_USER"
     elif [[ "x$UID" != "x0" ]]; then
-        cmd_group "$USER"
+        usermod -aG netdev "$USER"
     fi
 }
 
