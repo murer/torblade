@@ -57,6 +57,12 @@ function cmd_start() {
   cmd_healthcheck "$_service"
 }
 
+function cmd_start_each() {
+  cmd_start tor
+  cmd_start dnscrypt
+  cmd_start dhcpd
+}
+
 function cmd_start_retry() {
   while ! cmd_start; do
     sleep 1
