@@ -14,6 +14,7 @@ function cmd_run() {
   [ -t 0 ] || _is_tty=""
   docker run \
     --rm -i $_is_tty \
+    -e "TORBLADE_SERVICE=$TORBLADE_SERVICE" \
     --label torbladedev \
     torblade/torblade:dev "$@"
 }

@@ -4,7 +4,7 @@ function cmd_health() {
     torsocks curl -s https://check.torproject.org/api/ip | grep -q '\"IsTor\":true'
 }
 
-function cmd_start() {
+function cmd_run() {
     exec /usr/bin/tor -f /etc/tor/torrc &
 }
 
