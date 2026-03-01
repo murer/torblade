@@ -4,7 +4,7 @@ if [ -z "$TORBLADE_SERVICE" ]; then
     echo 'TORBLADE_SERVICE is required'
     false
 else
-    exec /opt/torblade/start.$TORBLADE_SERVICE.sh run
+    exec /opt/torblade/tb.$TORBLADE_SERVICE.sh run
 fi
 
 # /usr/bin/tor -f /etc/tor/torrc &
