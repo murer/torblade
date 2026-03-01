@@ -50,6 +50,20 @@ function cmd_iptables_apply() {
     sudo iptables -I FORWARD 1 -j VPN_GATEWAY_FWD
 }
 
+function cmd_iptables_drop() {
+    # 1. "Despluga" suas cadeias do sistema principal
+    sudo iptables -t nat -D POSTROUTING -j VPN_GATEWAY_NAT
+    sudo iptables -D FORWARD -j VPN_GATEWAY_FWD
+
+    # 2. Limpa (Flush) todas as regras de dentro das suas cadeias
+    sudo iptables -t nat -F VPN_GATEWAY_NAT
+    sudo iptables -F VPN_GATEWAY_FWD
+
+    # 3. Deleta as cadeias vazias
+    sudo iptables -t nat -X VPN_GATEWAY_NAT
+    sudo iptables -X VPN_GATEWAY_FWD
+}
+
 function cmd_install_all() {
     cmd_install_ips
     cmd_install_dhpcd
