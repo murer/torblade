@@ -31,7 +31,7 @@ Configure your VM with two Network Adapters:
 ./iptables.sh fix_my_ip
 
 # Spin up the Tor and DNS containers
-./docker.sh start
+./docker.sh start all
 
 # Apply the transparent proxy and firewall rules
 sudo ./iptables.sh apply
