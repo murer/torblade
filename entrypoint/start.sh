@@ -1,6 +1,5 @@
 #!/bin/bash -xe
 
-find /opt/torblade
 [ -z "$TORBLADE_SERVICE" ] || exec /opt/torblade/start.$TORBLADE_SERVICE.sh run
 
 

@@ -5,7 +5,7 @@ function cmd_health() {
 }
 
 function cmd_run() {
-    exec /usr/bin/tor -f /etc/tor/torrc &
+    exec /usr/bin/tor -f /etc/tor/torrc
 }
 
 _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
