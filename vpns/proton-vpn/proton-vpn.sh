@@ -35,6 +35,21 @@ function cmd_install_ips() {
     sudo nmcli connection up "Wired connection 2"
 }
 
+function cmd_iptables() {
+    # 1. Cria as cadeias customizadas (uma para NAT, outra para os filtros de FORWARD)
+    sudo iptables -t nat -N VPN_GATEWAY_NAT
+    sudo iptables -N VPN_GATEWAY_FWD
+
+    # 2. Adiciona suas regras específicas DENTRO dessas novas cadeias
+    sudo iptables -t nat -A VPN_GATEWAY_NAT -s 192.168.100.0/24 -o proton0 -j MASQUERADE
+    sudo iptables -A VPN_GATEWAY_FWD -i enp0s8 -o proton0 -j ACCEPT
+    sudo iptables -A VPN_GATEWAY_FWD -i proton0 -o enp0s8 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+    # 3. "Pluga" as cadeias no topo do roteamento do sistema
+    sudo iptables -t nat -I POSTROUTING 1 -j VPN_GATEWAY_NAT
+    sudo iptables -I FORWARD 1 -j VPN_GATEWAY_FWD
+}
+
 function cmd_install_all() {
     cmd_install_ips
     cmd_install_dhpcd
