@@ -1,7 +1,11 @@
 #!/bin/bash -xe
 
-[ -z "$TORBLADE_SERVICE" ] || exec /opt/torblade/start.$TORBLADE_SERVICE.sh run
-
+if [ -z "$TORBLADE_SERVICE" ]; then
+    echo 'TORBLADE_SERVICE is required'
+    false
+else
+    exec /opt/torblade/start.$TORBLADE_SERVICE.sh run
+fi
 
 # /usr/bin/tor -f /etc/tor/torrc &
 # timeout 60s /opt/torblade/health.sh wait_tor
