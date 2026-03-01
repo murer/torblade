@@ -44,6 +44,7 @@ function cmd_exec() {
 }
 
 function cmd_start() {
+  local _service="${1?'_service, try: all'}"
   cmd_clean
   cmd_build
   docker run -d --name torbladedev_server \
