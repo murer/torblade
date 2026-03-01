@@ -35,7 +35,7 @@ function cmd_install_ips() {
     sudo nmcli connection up "Wired connection 2"
 }
 
-function cmd_iptables() {
+function cmd_iptables_apply() {
     # 1. Cria as cadeias customizadas (uma para NAT, outra para os filtros de FORWARD)
     sudo iptables -t nat -N VPN_GATEWAY_NAT
     sudo iptables -N VPN_GATEWAY_FWD
