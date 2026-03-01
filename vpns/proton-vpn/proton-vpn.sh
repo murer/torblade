@@ -17,12 +17,14 @@ function cmd_install_protonvpn() {
 }
 
 function cmd_install_dhpcd() {
-    true
+    apt install -y curl dnsutils nmap isc-dhcp-server iptables net-tools vim
+    cp dhcpd.conf /etc/dhcp/dhcpd.conf
+    cp isc-dhcp-server /etc/default/isc-dhcp-server
 }
 
 function cmd_install_all() {
-    cmd_install_protonvpn
     cmd_install_dhpcd
+    cmd_install_protonvpn
 }
 
 cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
