@@ -83,7 +83,7 @@ function cmd_install_all() {
 function cmd_start() {
     [ "x$UID" != "x0" ]
     sudo service isc-dhcp-server restart
-    cmd_iptables_drop \| true
+    cmd_iptables_drop || true
     cmd_iptables_apply
     protonvpn-app
 }
