@@ -58,6 +58,7 @@ function cmd_start() {
 }
 
 function cmd_start_each() {
+  cmd_clean
   cmd_start tor
   cmd_start dnscrypt
   cmd_start dhcpd
