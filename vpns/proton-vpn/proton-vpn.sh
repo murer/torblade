@@ -16,7 +16,7 @@ function cmd_install_protonvpn() {
     fi
 }
 
-function cmd_install_dhpcd() {
+function cmd_install_dhcpd() {
     apt install -y curl dnsutils nmap isc-dhcp-server iptables net-tools vim
     cp dhcpd.conf /etc/dhcp/dhcpd.conf
     cp isc-dhcp-server /etc/default/isc-dhcp-server
@@ -76,7 +76,7 @@ function cmd_iptables_drop() {
 
 function cmd_install_all() {
     cmd_install_ips
-    cmd_install_dhpcd
+    cmd_install_dhcpd
     cmd_install_protonvpn
 }
 
