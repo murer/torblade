@@ -5,7 +5,7 @@ function cmd_health() {
 }
 
 function cmd_run() {
-    bash
+    exec sleep 600
 }
 
 _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"

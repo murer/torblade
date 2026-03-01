@@ -17,4 +17,4 @@ RUN chmod +x /opt/torblade/*.sh
 
 CMD ["/opt/torblade/start.sh"]
 
-HEALTHCHECK CMD /opt/torblade/health.sh
+HEALTHCHECK --start-interval=3s --interval=60s --timeout=3s --retries=2 --start-period=5s CMD /opt/torblade/health.sh

@@ -1,7 +1,6 @@
 #!/bin/bash -xe
 
 function cmd_health() {
-    sleep 2
     false broken
 }
 
