@@ -80,8 +80,11 @@ function cmd_install_all() {
     cmd_install_protonvpn
 }
 
-function cmd_start_dhcpd() {
-    service isc-dhcp-server start
+function cmd_start() {
+    sudo service isc-dhcp-server restart
+    cmd_iptables_drop
+    cmd_iptables_apply
+    protonvpn-app
 }
 
 cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
