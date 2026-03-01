@@ -36,33 +36,37 @@ function cmd_install_ips() {
 }
 
 function cmd_iptables_apply() {
-    # 1. Cria as cadeias customizadas (uma para NAT, outra para os filtros de FORWARD)
-    sudo iptables -t nat -N VPN_GATEWAY_NAT
-    sudo iptables -N VPN_GATEWAY_FWD
+    # # 1. Cria as cadeias customizadas (uma para NAT, outra para os filtros de FORWARD)
+    # sudo iptables -t nat -N VPN_GATEWAY_NAT
+    # sudo iptables -N VPN_GATEWAY_FWD
 
-    # 2. Adiciona suas regras específicas DENTRO dessas novas cadeias
-    sudo iptables -t nat -A VPN_GATEWAY_NAT -s 192.168.100.0/24 -o proton0 -j MASQUERADE
-    sudo iptables -A VPN_GATEWAY_FWD -i enp0s8 -o proton0 -j ACCEPT
-    sudo iptables -A VPN_GATEWAY_FWD -i proton0 -o enp0s8 -m state --state RELATED,ESTABLISHED -j ACCEPT
+    # # 2. Adiciona suas regras específicas DENTRO dessas novas cadeias
+    # sudo iptables -t nat -A VPN_GATEWAY_NAT -s 192.168.100.0/24 -o proton0 -j MASQUERADE
+    # sudo iptables -A VPN_GATEWAY_FWD -i enp0s8 -o proton0 -j ACCEPT
+    # sudo iptables -A VPN_GATEWAY_FWD -i proton0 -o enp0s8 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
-    # 3. "Pluga" as cadeias no topo do roteamento do sistema
-    sudo iptables -t nat -I POSTROUTING 1 -j VPN_GATEWAY_NAT
-    sudo iptables -I FORWARD 1 -j VPN_GATEWAY_FWD
+    # # 3. "Pluga" as cadeias no topo do roteamento do sistema
+    # sudo iptables -t nat -I POSTROUTING 1 -j VPN_GATEWAY_NAT
+    # sudo iptables -I FORWARD 1 -j VPN_GATEWAY_FWD
+
+    iptables -t nat -I POSTROUTING -s 192.168.100.0/24 -o proton0 -j MASQUERADE
+    iptables -I FORWARD -i enp0s8 -o proton0 -j ACCEPT
+    iptables -I FORWARD -i proton0 -o enp0s8 -m state --state RELATED,ESTABLISHED -j ACCEPT
 }
 
-function cmd_iptables_drop() {
-    # 1. "Despluga" suas cadeias do sistema principal
-    sudo iptables -t nat -D POSTROUTING -j VPN_GATEWAY_NAT
-    sudo iptables -D FORWARD -j VPN_GATEWAY_FWD
+# function cmd_iptables_drop() {
+#     # 1. "Despluga" suas cadeias do sistema principal
+#     sudo iptables -t nat -D POSTROUTING -j VPN_GATEWAY_NAT
+#     sudo iptables -D FORWARD -j VPN_GATEWAY_FWD
 
-    # 2. Limpa (Flush) todas as regras de dentro das suas cadeias
-    sudo iptables -t nat -F VPN_GATEWAY_NAT
-    sudo iptables -F VPN_GATEWAY_FWD
+#     # 2. Limpa (Flush) todas as regras de dentro das suas cadeias
+#     sudo iptables -t nat -F VPN_GATEWAY_NAT
+#     sudo iptables -F VPN_GATEWAY_FWD
 
-    # 3. Deleta as cadeias vazias
-    sudo iptables -t nat -X VPN_GATEWAY_NAT
-    sudo iptables -X VPN_GATEWAY_FWD
-}
+#     # 3. Deleta as cadeias vazias
+#     sudo iptables -t nat -X VPN_GATEWAY_NAT
+#     sudo iptables -X VPN_GATEWAY_FWD
+# }
 
 function cmd_install_all() {
     cmd_install_ips
@@ -74,4 +78,4 @@ function cmd_start_dhcpd() {
     service isc-dhcp-server start
 }
 
-cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
+23cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
