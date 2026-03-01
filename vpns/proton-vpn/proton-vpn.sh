@@ -27,7 +27,11 @@ function cmd_install_all() {
     cmd_install_protonvpn
 }
 
-function cmd_start() {
+function cmd_start_dhcpd() {
+    service isc-dhcp-server restart
+}
+
+function cmd_start_all() {
     [ "x$UID" != "x0" ]
 }
 
