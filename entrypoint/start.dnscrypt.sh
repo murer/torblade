@@ -5,7 +5,7 @@ function cmd_health() {
 }
 
 function cmd_run() {
-    /usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.toml &
+    /usr/sbin/dnscrypt-proxy -config /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 }
 
 _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
