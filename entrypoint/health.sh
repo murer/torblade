@@ -1,28 +1,25 @@
 #!/bin/bash -xe
 
-function cmd_tor() {
-    torsocks curl -s https://check.torproject.org/api/ip | grep -q '\"IsTor\":true'
-}
+if [ -z "$TORBLADE_SERVICE" ]; then
+    echo 'TORBLADE_SERVICE is required'
+    false
+else
 
-function cmd_doh() {
-    dig @127.0.0.1 -p 5300 example.com # > /dev/null
-}
+    function _check() {
+        echo "fail" > /var/torblade/health.last
+        exec /opt/torblade/tb.$TORBLADE_SERVICE.sh health
+        echo "success" > /var/torblade/health.last
+    }
 
-function cmd_wait_tor() {
-    while ! cmd_tor; do
-        sleep 10
-    done
-}
+    mkdir -p /var/torblade
+    [ ! -f /var/torblade/health.created ] && touch /var/torblade/health.created
+    [ ! -f /var/torblade/health.last ] && touch /var/torblade/health.last
 
-function cmd_wait_doh() {
-    while ! cmd_doh; do
-        sleep 10
-    done
-}
-
-function cmd_all() {
-    cmd_tor
-    cmd_doh
-}
-
-cd "$(dirname "$0")"; _cmd="${1?"cmd is required"}"; shift; "cmd_${_cmd}" "$@"
+    if find /var/torblade/health.created -mmin -2 | grep '.\+'; then
+        _check
+    elif find /var/torblade/health.last -mmin +5 | grep '.\+'; then
+        _check
+    fi
+    grep success /var/torblade/health.last
+    
+fi

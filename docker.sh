@@ -14,21 +14,23 @@ function cmd_run() {
   [ -t 0 ] || _is_tty=""
   docker run \
     --rm -i $_is_tty \
+    -e "TORBLADE_SERVICE=$TORBLADE_SERVICE" \
     --label torbladedev \
     torblade/torblade:dev "$@"
 }
 
 function cmd_healthcheck() {
+  local _service="${1?'_service, try: all'}"
   set +x
   local _since_date="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   local i=""
   local _status=""
   # for i in $(seq 1 30); do
   while [ 1 ]; do
-    _status="$(docker inspect --format='{{.State.Health.Status}}' torbladedev_server)"
+    _status="$(docker inspect --format='{{.State.Health.Status}}' "torbladedev_server_$_service")"
     if [ "x$_status" != "xstarting" ]; then break; fi
     # if [ "x$_status" == "xhealthy" ] || [ "x$_status" == "xunhealthy" ]; then break; fi
-    docker logs --since "$_since_date" torbladedev_server || true
+    docker logs --since "$_since_date" "torbladedev_server_$_service" || true
     _since_date="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     sleep 1
   done
@@ -43,14 +45,23 @@ function cmd_exec() {
 }
 
 function cmd_start() {
-  cmd_clean
+  local _service="${1?'_service, try: all'}"
+  docker rm -f "torbladedev_server_$_service" || true
   cmd_build
-  docker run -d --name torbladedev_server \
+  docker run -d --name "torbladedev_server_$_service" \
     --label torbladedev \
     --network host \
+    -e "TORBLADE_SERVICE=$_service" \
     --cap-add CAP_NET_ADMIN \
     torblade/torblade:dev
-  cmd_healthcheck
+  cmd_healthcheck "$_service"
+}
+
+function cmd_start_each() {
+  cmd_clean
+  cmd_start tor
+  cmd_start dnscrypt
+  cmd_start dhcpd
 }
 
 function cmd_start_retry() {
